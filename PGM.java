@@ -13,10 +13,7 @@ public class PGM extends Imagem {
     for (int i = 0; i < this.matriz.length; i++) {
       for (int j = 0; j < this.matriz[0].length; j++) {
         aux = this.matriz[i][j] - valor;
-        if (aux < 0)
-          this.matriz[i][j] = 0;
-        else
-          this.matriz[i][j] = aux;
+        this.matriz[i][j] = Math.max(aux, 0);
       }
     }
   }
@@ -26,10 +23,7 @@ public class PGM extends Imagem {
     for (int i = 0; i < this.matriz.length; i++) {
       for (int j = 0; j < this.matriz[0].length; j++) {
         aux = this.matriz[i][j] + valor;
-        if (aux > this.maxval)
-          this.matriz[i][j] = maxval;
-        else
-          this.matriz[i][j] = aux;
+        this.matriz[i][j] = Math.min(aux, this.maxval);
       }
     }
   }
@@ -81,11 +75,11 @@ public class PGM extends Imagem {
     }
   }
   
-  public void gama(float gama) {
+  public void gama(float gama, float constante) {
     double result;
     for (int i = 0; i < this.altura; i++) {
       for (int j = 0; j < this.largura; j++)
-        this.matriz[i][j] = (int) (this.maxval * Math.pow(this.matriz[i][j] / (float) this.maxval, gama));
+        this.matriz[i][j] = (int) (this.maxval * constante * Math.pow(this.matriz[i][j] / (float) this.maxval, gama));
       
     }
   }

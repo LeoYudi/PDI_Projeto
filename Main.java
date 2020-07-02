@@ -15,7 +15,7 @@ public class Main {
     String path = scanner.next();
     if (path.contains(".pgm")) {
       PGM imagem = ManipuladorArquivo.leitorPGM(path);
-      PGM result = imagem;
+      PGM result = new PGM(imagem.tipo, imagem.largura, imagem.altura, imagem.maxval, imagem.matriz);
       switch (operacaoPGM()) {
         case 1:
           System.out.println("\n Quanto gostaria de escurecer (numero>0)?");
@@ -44,16 +44,15 @@ public class Main {
           valor = scanner.nextInt();
           System.out.println("\nDigite se os pixels fora do intervalo vão ser mantidos ou alterados para preto (0 para manter e 1 para alterar):");
           total = scanner.nextInt();
-          if (total == 0)
-            result.fatiamento(inicio, fim, valor, false);
-          else
-            result.fatiamento(inicio, fim, valor, true);
+          result.fatiamento(inicio, fim, valor, total != 0);
           break;
         case 7:
-          float gama;
+          float gama, constante;
           System.out.println("\n Digite o valor de gama:");
           gama = scanner.nextFloat();
-          result.gama(gama);
+          System.out.println("\n Digite o valor da constante:");
+          constante = scanner.nextFloat();
+          result.gama(gama, constante);
           break;
       }
       System.out.println("\n Resultado foi salvo no arquivo 'result.pgm'");
@@ -114,9 +113,7 @@ public class Main {
   public static boolean verificaRGB(PGM r, PGM g, PGM b) {
     if (r.altura == g.altura && r.altura == b.altura) {
       if (r.largura == g.largura && r.largura == b.largura) {
-        if (r.maxval == g.maxval && r.maxval == b.maxval) {
-          return true;
-        }
+        return r.maxval == g.maxval && r.maxval == b.maxval;
       }
     }
     return false;
