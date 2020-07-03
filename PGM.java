@@ -84,6 +84,34 @@ public class PGM extends Imagem {
     }
   }
   
+  public void equaliza() {
+    float[] nivel = new float[maxval + 1];
+    for (int i = 0; i < this.altura; i++) {
+      for (int j = 0; j < this.largura; j++)
+        nivel[this.matriz[i][j]]++;
+    } //pega quantidade de cada nivel na imagem
+    
+    for (int i = 0; i < nivel.length; i++) {
+      nivel[i] = nivel[i] / (float) (this.largura * this.altura);
+    } //altera a quantidade para probabilidade
+    
+    int[] result = new int[nivel.length];
+    double soma = 0.0;
+    for (int i = 0; i < result.length; i++) {
+      for (int j = 0; j <= i; j++)
+        soma += nivel[j];
+      
+      result[i] = (int) (soma * this.maxval);
+      soma = 0;
+    } //em result vai ter o novo valor para cada nivel de cinza
+    
+    for (int i = 0; i < this.altura; i++) {
+      for (int j = 0; j < this.largura; j++)
+        this.matriz[i][j] = result[this.matriz[i][j]];
+      
+    }
+  }
+  
   private int troca(int a, int b) {
     return a;
   }

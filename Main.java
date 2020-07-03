@@ -54,6 +54,9 @@ public class Main {
           constante = scanner.nextFloat();
           result.gama(gama, constante);
           break;
+        case 8:
+          result.equaliza();
+          break;
       }
       System.out.println("\n Resultado foi salvo no arquivo 'result.pgm'");
       escritorPGM("result.pgm", result);
@@ -93,8 +96,9 @@ public class Main {
     System.out.println("4 - Girar 90°");
     System.out.println("5 - Flip Horizontal");
     System.out.println("6 - Fatiamento de Níveis de Intensidade");
-    System.out.println("7 - Transformação Gama\n");
-    System.out.println("Qual operação gostaria de realizar com a imagem (1-7)? ");
+    System.out.println("7 - Transformação Gama");
+    System.out.println("8 - Equalizar\n");
+    System.out.println("Qual operação gostaria de realizar com a imagem (1-8)? ");
     
     Scanner scanner = new Scanner(System.in);
     
