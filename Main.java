@@ -57,6 +57,16 @@ public class Main {
         case 8:
           result.equaliza();
           break;
+        case 9:
+          System.out.println("\n Digite o valor da constante: ");
+          constante = scanner.nextFloat();
+          result = result.laplace(constante);
+          break;
+        case 10:
+          System.out.println("\n Digite o valor da constante: ");
+          constante = scanner.nextFloat();
+          result = result.outroFiltro(constante);
+          break;
       }
       System.out.println("\n Resultado foi salvo no arquivo 'result.pgm'");
       escritorPGM("result.pgm", result);
@@ -97,8 +107,10 @@ public class Main {
     System.out.println("5 - Flip Horizontal");
     System.out.println("6 - Fatiamento de Níveis de Intensidade");
     System.out.println("7 - Transformação Gama");
-    System.out.println("8 - Equalizar\n");
-    System.out.println("Qual operação gostaria de realizar com a imagem (1-8)? ");
+    System.out.println("8 - Equalizar");
+    System.out.println("9 - Filtro Laplaciano");
+    System.out.println("10 - Outro filtro\n");
+    System.out.println("Qual operação gostaria de realizar com a imagem (1-10)? ");
     
     Scanner scanner = new Scanner(System.in);
     

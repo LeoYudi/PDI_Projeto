@@ -112,7 +112,78 @@ public class PGM extends Imagem {
     }
   }
   
+  public PGM laplace(float constante) {
+    int[][] filtro = filtroLaplace();
+    int[][] nova = new int[this.altura][this.largura];
+    for (int i = 0; i < this.altura; i++) {
+      for (int j = 0; j < this.largura; j++) {
+        nova[i][j] = aplicaFiltroPixel(i, j, filtro, constante);
+      }
+    }
+    return new PGM(this.tipo, this.largura, this.altura, this.maxval, nova);
+  }
+  
+  public PGM outroFiltro(float constante) {
+    int[][] filtro = outroFiltro();
+    int[][] nova = new int[this.altura][this.largura];
+    for (int i = 0; i < this.altura; i++) {
+      for (int j = 0; j < this.largura; j++) {
+        nova[i][j] = aplicaFiltroPixel(i, j, filtro, constante);
+      }
+    }
+    return new PGM(this.tipo, this.largura, this.altura, this.maxval, nova);
+  }
+  
   private int troca(int a, int b) {
     return a;
+  }
+  
+  private int[][] filtroLaplace() {
+    int[][] filtro = new int[3][3];
+    filtro[0][0] = 0;
+    filtro[0][1] = -1;
+    filtro[0][2] = 0;
+    filtro[1][0] = -1;
+    filtro[1][1] = 4;
+    filtro[1][2] = -1;
+    filtro[2][0] = 0;
+    filtro[2][1] = -1;
+    filtro[2][2] = 0;
+    return filtro;
+  }
+  
+  private int[][] outroFiltro() {
+    int[][] filtro = new int[3][3];
+    filtro[0][0] = -1;
+    filtro[0][1] = -1;
+    filtro[0][2] = -1;
+    filtro[1][0] = -1;
+    filtro[1][1] = 8;
+    filtro[1][2] = -1;
+    filtro[2][0] = -1;
+    filtro[2][1] = -1;
+    filtro[2][2] = -1;
+    return filtro;
+  }
+  
+  private int aplicaFiltroPixel(int altura, int largura, int[][] filtro, float constante) {
+    float result = 0;
+    int filtroI = 0, filtroJ = 0;
+    for (int i = altura - 1; i <= altura + 1; i++) {
+      filtroJ = 0;
+      for (int j = largura - 1; j <= largura + 1; j++) {
+        if (i >= 0 && i < this.altura && j >= 0 && j < this.largura)
+          result += filtro[filtroI][filtroJ++] * this.matriz[i][j];
+      }
+      filtroI++;
+    }
+    result *= constante;
+    result += this.matriz[altura][largura];
+    if (result > this.maxval)
+      return this.maxval;
+    else if (result <= 0)
+      return 0;
+    else
+      return (int) result;
   }
 }
