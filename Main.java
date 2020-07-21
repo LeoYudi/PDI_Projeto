@@ -67,6 +67,12 @@ public class Main {
           constante = scanner.nextFloat();
           result = result.outroFiltro(constante);
           break;
+        case 11:
+          int n;
+          System.out.println("\n Digite o valor da dimensão do filtro: ");
+          n = scanner.nextInt();
+          result = result.filtroMedia(n, scanner);
+          break;
       }
       System.out.println("\n Resultado foi salvo no arquivo 'result.pgm'");
       escritorPGM("result.pgm", result);
@@ -109,8 +115,9 @@ public class Main {
     System.out.println("7 - Transformação Gama");
     System.out.println("8 - Equalizar");
     System.out.println("9 - Filtro Laplaciano");
-    System.out.println("10 - Outro filtro\n");
-    System.out.println("Qual operação gostaria de realizar com a imagem (1-10)? ");
+    System.out.println("10 - Outro filtro");
+    System.out.println("11 - Filtro Média\n");
+    System.out.println("Qual operação gostaria de realizar com a imagem (1-11)? ");
     
     Scanner scanner = new Scanner(System.in);
     
@@ -119,7 +126,7 @@ public class Main {
   
   public static int operacaoPPM() {
     System.out.println("1 - PPM para PGM");
-    System.out.println("1 - PGM para PPM (certifique-se que os arquivos r.pgm, g.pgm e b.pgm já estão criado e setados)\n");
+    System.out.println("2 - PGM para PPM (certifique-se que os arquivos r.pgm, g.pgm e b.pgm já estão salvos na pasta raiz do projeto e setados com os valores desejados)\n");
     System.out.println("Qual operação gostaria de realizar (1-2)?");
     Scanner scanner = new Scanner(System.in);
     

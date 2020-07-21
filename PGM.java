@@ -1,5 +1,7 @@
 package com.company;
 
+import java.util.Scanner;
+
 public class PGM extends Imagem {
   int[][] matriz;
   
@@ -134,6 +136,30 @@ public class PGM extends Imagem {
     return new PGM(this.tipo, this.largura, this.altura, this.maxval, nova);
   }
   
+  public PGM filtroMedia(int n, Scanner scanner) {
+    int[][] filtro = filtroMedia(n);
+    int[][] nova = new int[this.altura][this.largura];
+    for (int i = 0; i < this.altura; i++) {
+      for (int j = 0; j < this.largura; j++) {
+        nova[i][j] = aplicaFiltroPixel(i, j, filtro, 1 / (float) (n * n));
+      }
+    }
+    System.out.println("\nGostaria realizar um fatiamento (0 - Não || 1 - Sim)?");
+    if (scanner.nextInt() == 1) {
+      int inicio, fim, valor, total;
+      System.out.println("\nDigite o inicio do intervalo:");
+      inicio = scanner.nextInt();
+      System.out.println("\nDigite o fim do intervalo:");
+      fim = scanner.nextInt();
+      System.out.println("\nDigite o valor a ser recebido pelo pixel caso dentro do intervalo:");
+      valor = scanner.nextInt();
+      System.out.println("\nDigite se os pixels fora do intervalo vão ser mantidos ou alterados para preto (0 para manter e 1 para alterar):");
+      total = scanner.nextInt();
+      this.fatiamento(inicio, fim, valor, total != 0);
+    }
+    return new PGM(this.tipo, this.largura, this.altura, this.maxval, nova);
+  }
+  
   private int troca(int a, int b) {
     return a;
   }
@@ -163,6 +189,16 @@ public class PGM extends Imagem {
     filtro[2][0] = -1;
     filtro[2][1] = -1;
     filtro[2][2] = -1;
+    return filtro;
+  }
+  
+  private int[][] filtroMedia(int n) {
+    int[][] filtro = new int[n][n];
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        filtro[i][j] = 1;
+      }
+    }
     return filtro;
   }
   
