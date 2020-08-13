@@ -96,19 +96,24 @@ public class ManipuladorArquivo {
       altura = Integer.parseInt(lista.get(2));
       maxval = Integer.parseInt(lista.get(3));
       valores = new int[altura][largura][3];
-      int linhas, coluna;
-      linhas = 0;
-      coluna = 0;
-      for (int i = 4; i < lista.size(); i++) {
-        if (coluna != largura) {
-          valores[linhas][coluna][0] = Integer.parseInt(lista.get(i++));
-          valores[linhas][coluna][1] = Integer.parseInt(lista.get(i++));
-          valores[linhas][coluna++][2] = Integer.parseInt(lista.get(i++));
-        } else {
-          coluna = 0;
-          valores[++linhas][coluna][0] = Integer.parseInt(lista.get(i++));
-          valores[linhas][coluna][1] = Integer.parseInt(lista.get(i++));
-          valores[linhas][coluna++][2] = Integer.parseInt(lista.get(i++));
+      int linhas = 4;
+//      for (int i = 4; i < lista.size(); i++) {
+//        if (coluna != largura) {
+//          valores[linhas][coluna][0] = Integer.parseInt(lista.get(i++));
+//          valores[linhas][coluna][1] = Integer.parseInt(lista.get(i++));
+//          valores[linhas][coluna++][2] = Integer.parseInt(lista.get(i++));
+//        } else {
+//          coluna = 0;
+//          valores[++linhas][coluna][0] = Integer.parseInt(lista.get(i++));
+//          valores[linhas][coluna][1] = Integer.parseInt(lista.get(i++));
+//          valores[linhas][coluna++][2] = Integer.parseInt(lista.get(i++));
+//        }
+//      }
+      for (int i = 0; i < altura; i++) {
+        for (int j = 0; j < largura; j++) {
+          valores[i][j][0] = Integer.parseInt(lista.get(linhas++));
+          valores[i][j][1] = Integer.parseInt(lista.get(linhas++));
+          valores[i][j][2] = Integer.parseInt(lista.get(linhas++));
         }
       }
     }

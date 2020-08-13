@@ -78,12 +78,10 @@ public class PGM extends Imagem {
   }
   
   public void gama(float gama, float constante) {
-    double result;
-    for (int i = 0; i < this.altura; i++) {
+    for (int i = 0; i < this.altura; i++)
       for (int j = 0; j < this.largura; j++)
         this.matriz[i][j] = (int) (this.maxval * constante * Math.pow(this.matriz[i][j] / (float) this.maxval, gama));
-      
-    }
+    
   }
   
   public void equaliza() {
@@ -204,7 +202,7 @@ public class PGM extends Imagem {
   
   private int aplicaFiltroPixel(int altura, int largura, int[][] filtro, float constante) {
     float result = 0;
-    int filtroI = 0, filtroJ = 0;
+    int filtroI = 0, filtroJ;
     for (int i = altura - 1; i <= altura + 1; i++) {
       filtroJ = 0;
       for (int j = largura - 1; j <= largura + 1; j++) {

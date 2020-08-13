@@ -100,6 +100,15 @@ public class Main {
           escritorPPM(path, imagem);
           System.out.println("\n Resultado foi salvo no arquivo '" + path + "'");
           break;
+        
+        case 3:
+          PGM[] cmy;
+          cmy = imagem.toCMY();
+          escritorPGM("c.pgm", cmy[0]);
+          escritorPGM("m.pgm", cmy[1]);
+          escritorPGM("y.pgm", cmy[2]);
+          System.out.println("\n Resultados foram salvos nos arquivos c.pgm, m.pgm e y.pgm");
+          break;
       }
     }
   }
@@ -126,8 +135,9 @@ public class Main {
   
   public static int operacaoPPM() {
     System.out.println("1 - PPM para PGM");
-    System.out.println("2 - PGM para PPM (certifique-se que os arquivos r.pgm, g.pgm e b.pgm já estão salvos na pasta raiz do projeto e setados com os valores desejados)\n");
-    System.out.println("Qual operação gostaria de realizar (1-2)?");
+    System.out.println("2 - PGM para PPM (certifique-se que os arquivos r.pgm, g.pgm e b.pgm já estão salvos na pasta raiz do projeto e setados com os valores desejados)");
+    System.out.println("3 - RGB para CMY\n");
+    System.out.println("Qual operação gostaria de realizar (1-3)?");
     Scanner scanner = new Scanner(System.in);
     
     return scanner.nextInt();

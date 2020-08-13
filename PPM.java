@@ -21,9 +21,9 @@ public class PPM extends Imagem {
         b[i][j] = this.valores[i][j][2];
       }
     }
-    imagens[0] = new PGM("P2", this.altura, this.largura, this.maxval, r);
-    imagens[1] = new PGM("P2", this.altura, this.largura, this.maxval, g);
-    imagens[2] = new PGM("P2", this.altura, this.largura, this.maxval, b);
+    imagens[0] = new PGM("P2", this.largura, this.altura, this.maxval, r);
+    imagens[1] = new PGM("P2", this.largura, this.altura, this.maxval, g);
+    imagens[2] = new PGM("P2", this.largura, this.altura, this.maxval, b);
     return imagens;
   }
   
@@ -40,5 +40,18 @@ public class PPM extends Imagem {
         this.valores[i][j][2] = b.matriz[i][j];
       }
     }
+  }
+  
+  public PGM[] toCMY() {
+    PGM[] imagens = new PGM[3];
+    imagens = this.toPGM();
+    for (int i = 0; i < this.altura; i++) {
+      for (int j = 0; j < this.largura; j++) {
+        imagens[0].matriz[i][j] = this.maxval - imagens[0].matriz[i][j];
+        imagens[1].matriz[i][j] = this.maxval - imagens[1].matriz[i][j];
+        imagens[2].matriz[i][j] = this.maxval - imagens[2].matriz[i][j];
+      }
+    }
+    return imagens;
   }
 }
