@@ -54,4 +54,54 @@ public class PPM extends Imagem {
     }
     return imagens;
   }
+  
+  public PGM[] toHSI() {
+    PGM[] imagens = new PGM[3];
+    imagens = this.toPGM();
+    double[][] r, g, b;
+    r = new double[this.altura][this.largura];
+    g = new double[this.altura][this.largura];
+    b = new double[this.altura][this.largura];
+    for (int i = 0; i < this.altura; i++) {
+      for (int j = 0; j < this.largura; j++) {
+        r[i][j] = imagens[0].matriz[i][j] / (double) (imagens[0].matriz[i][j] + imagens[1].matriz[i][j] + imagens[2].matriz[i][j]);
+        g[i][j] = imagens[1].matriz[i][j] / (double) (imagens[0].matriz[i][j] + imagens[1].matriz[i][j] + imagens[2].matriz[i][j]);
+        b[i][j] = imagens[2].matriz[i][j] / (double) (imagens[0].matriz[i][j] + imagens[1].matriz[i][j] + imagens[2].matriz[i][j]);
+      }
+    }
+    double h, s, i;
+    int[][] resultH, resultS, resultI;
+    resultH = new int[this.altura][this.largura];
+    resultS = new int[this.altura][this.largura];
+    resultI = new int[this.altura][this.largura];
+    for (int linha = 0; linha < this.altura; linha++) {
+      for (int coluna = 0; coluna < this.largura; coluna++) {
+        h = Math.acos((0.5 * (2 * r[linha][coluna] - g[linha][coluna] - b[linha][coluna])) / Math.sqrt(Math.pow(r[linha][coluna] - g[linha][coluna], 2) + ((r[linha][coluna] - b[linha][coluna]) * (g[linha][coluna] - b[linha][coluna]))));
+        if (b[linha][coluna] > g[linha][coluna])
+          h = (2 * Math.PI) - h;
+        s = 1 - 3 * min(r[linha][coluna], g[linha][coluna], b[linha][coluna]);
+        i = (imagens[0].matriz[linha][coluna] + imagens[1].matriz[linha][coluna] + imagens[2].matriz[linha][coluna]) / 3.0;
+        resultH[linha][coluna] = (int) (h * this.maxval / (2 * Math.PI));
+        resultS[linha][coluna] = (int) (s * this.maxval);
+        resultI[linha][coluna] = (int) i;
+      }
+    }
+    imagens = new PGM[3];
+    imagens[0] = new PGM("P2", this.altura, this.largura, this.maxval, resultH);
+    imagens[1] = new PGM("P2", this.altura, this.largura, this.maxval, resultS);
+    imagens[2] = new PGM("P2", this.altura, this.largura, this.maxval, resultI);
+    return imagens;
+  }
+  
+  public double min(double r, double g, double b) {
+    if (r < g) {
+      if (r < b)
+        return r;
+      else
+        return b;
+    } else if (g < b)
+      return g;
+    else
+      return b;
+  }
 }
