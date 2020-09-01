@@ -8,118 +8,32 @@ import static com.company.ManipuladorArquivo.escritorPPM;
 
 public class Main {
   
+  static Scanner scanner = new Scanner(System.in);
+  static PGM pgm;
+  static PGM resultPGM;
+  static PPM ppm;
+  
   public static void main(String[] args) throws IOException {
-    Scanner scanner = new Scanner(System.in);
-    
     System.out.println("Digite o nome do arquivo: ");
     String path = scanner.next();
     if (path.contains(".pgm")) {
-      PGM imagem = ManipuladorArquivo.leitorPGM(path);
-      PGM result = new PGM(imagem.tipo, imagem.largura, imagem.altura, imagem.maxval, imagem.matriz);
-      switch (operacaoPGM()) {
-        case 1:
-          System.out.println("\n Quanto gostaria de escurecer (numero>0)?");
-          result.escurecer(scanner.nextInt());
-          break;
-        case 2:
-          System.out.println("\n Quanto gostaria de clarear (numero>0)?");
-          result.clarear(scanner.nextInt());
-          break;
-        case 3:
-          result.negativo();
-          break;
-        case 4:
-          result = result.girar90();
-          break;
-        case 5:
-          result.flipHorizontal();
-          break;
-        case 6:
-          int inicio, fim, valor, total;
-          System.out.println("\nDigite o inicio do intervalo:");
-          inicio = scanner.nextInt();
-          System.out.println("\nDigite o fim do intervalo:");
-          fim = scanner.nextInt();
-          System.out.println("\nDigite o valor a ser recebido pelo pixel caso dentro do intervalo:");
-          valor = scanner.nextInt();
-          System.out.println("\nDigite se os pixels fora do intervalo vão ser mantidos ou alterados para preto (0 para manter e 1 para alterar):");
-          total = scanner.nextInt();
-          result.fatiamento(inicio, fim, valor, total != 0);
-          break;
-        case 7:
-          float gama, constante;
-          System.out.println("\n Digite o valor de gama:");
-          gama = scanner.nextFloat();
-          System.out.println("\n Digite o valor da constante:");
-          constante = scanner.nextFloat();
-          result.gama(gama, constante);
-          break;
-        case 8:
-          result.equaliza();
-          break;
-        case 9:
-          System.out.println("\n Digite o valor da constante: ");
-          constante = scanner.nextFloat();
-          result = result.laplace(constante);
-          break;
-        case 10:
-          System.out.println("\n Digite o valor da constante: ");
-          constante = scanner.nextFloat();
-          result = result.outroFiltro(constante);
-          break;
-        case 11:
-          int n;
-          System.out.println("\n Digite o valor da dimensão do filtro: ");
-          n = scanner.nextInt();
-          result = result.filtroMedia(n, scanner);
-          break;
-      }
-      System.out.println("\n Resultado foi salvo no arquivo 'result.pgm'");
-      escritorPGM("result.pgm", result);
+      pgm = ManipuladorArquivo.leitorPGM(path);
+      resultPGM = new PGM(pgm.tipo, pgm.largura, pgm.altura, pgm.maxval, pgm.matriz);
     } else if (path.contains(".ppm")) {
-      PPM imagem = ManipuladorArquivo.leitorPPM(path);
-      switch (operacaoPPM()) {
-        case 1:
-          PGM[] rgb;
-          rgb = imagem.toPGM();
-          escritorPGM("r.pgm", rgb[0]);
-          escritorPGM("g.pgm", rgb[1]);
-          escritorPGM("b.pgm", rgb[2]);
-          System.out.println("\n Resultado foi salvo nos arquivos 'r.ppm', 'g.ppm' e 'b.ppm'");
-          break;
-        
-        case 2:
-          PGM r = ManipuladorArquivo.leitorPGM("r.pgm");
-          PGM g = ManipuladorArquivo.leitorPGM("g.pgm");
-          PGM b = ManipuladorArquivo.leitorPGM("b.pgm");
-          if (!verificaRGB(r, g, b)) {
-            System.err.println("\n Arquivos com dimensões diferentes ou maxval diferente");
-            break;
-          }
-          imagem.toPPM(r, g, b);
-          escritorPPM(path, imagem);
-          System.out.println("\n Resultado foi salvo no arquivo '" + path + "'");
-          break;
-        
-        case 3:
-          PGM[] cmy;
-          cmy = imagem.toCMY();
-          escritorPGM("c.pgm", cmy[0]);
-          escritorPGM("m.pgm", cmy[1]);
-          escritorPGM("y.pgm", cmy[2]);
-          System.out.println("\n Resultados foram salvos nos arquivos c.pgm, m.pgm e y.pgm");
-          break;
-        
-        case 4:
-          PGM[] hsi;
-          hsi = imagem.toHSI();
-          escritorPGM("h.pgm", hsi[0]);
-          escritorPGM("s.pgm", hsi[1]);
-          escritorPGM("i.pgm", hsi[2]);
-          System.out.println("\n Resultados foram salvos nos arquivos h.pgm, s.pgm e i.pgm");
-          break;
-      }
+      ppm = ManipuladorArquivo.leitorPPM(path);
+    } else {
+      System.err.println("\nArquivo precisa ser de extensão .ppm ou .pgm");
+      return;
     }
+    do {
+      if (PGMouPPM()) {
+        switchPGM();
+        System.out.println("\nResultado foi salvo no arquivo 'result.pgm'");
+        escritorPGM("result.pgm", resultPGM);
+      } else {
+        switchPPM(path);
+      }
+    } while (continua());
   }
   
   public static int operacaoPGM() {
@@ -153,6 +67,16 @@ public class Main {
     return scanner.nextInt();
   }
   
+  public static boolean continua() {
+    System.out.println("\nGostaria de fazer outra operação (1-Sim || 0-Não)?");
+    return scanner.nextInt() == 1;
+  }
+  
+  public static boolean PGMouPPM() {
+    System.out.println("\nOperação para arquivos 1-PGM ou 2-PPM?");
+    return scanner.nextInt() == 1;
+  }
+  
   public static boolean verificaRGB(PGM r, PGM g, PGM b) {
     if (r.altura == g.altura && r.altura == b.altura) {
       if (r.largura == g.largura && r.largura == b.largura) {
@@ -162,4 +86,108 @@ public class Main {
     return false;
   }
   
+  public static void switchPGM() {
+    switch (operacaoPGM()) {
+      case 1:
+        System.out.println("\n Quanto gostaria de escurecer (numero>0)?");
+        resultPGM.escurecer(scanner.nextInt());
+        break;
+      case 2:
+        System.out.println("\n Quanto gostaria de clarear (numero>0)?");
+        resultPGM.clarear(scanner.nextInt());
+        break;
+      case 3:
+        resultPGM.negativo();
+        break;
+      case 4:
+        resultPGM = resultPGM.girar90();
+        break;
+      case 5:
+        resultPGM.flipHorizontal();
+        break;
+      case 6:
+        int inicio, fim, valor, total;
+        System.out.println("\nDigite o inicio do intervalo:");
+        inicio = scanner.nextInt();
+        System.out.println("\nDigite o fim do intervalo:");
+        fim = scanner.nextInt();
+        System.out.println("\nDigite o valor a ser recebido pelo pixel caso dentro do intervalo:");
+        valor = scanner.nextInt();
+        System.out.println("\nDigite se os pixels fora do intervalo vão ser mantidos ou alterados para preto (0 para manter e 1 para alterar):");
+        total = scanner.nextInt();
+        resultPGM.fatiamento(inicio, fim, valor, total != 0);
+        break;
+      case 7:
+        float gama, constante;
+        System.out.println("\n Digite o valor de gama:");
+        gama = scanner.nextFloat();
+        System.out.println("\n Digite o valor da constante:");
+        constante = scanner.nextFloat();
+        resultPGM.gama(gama, constante);
+        break;
+      case 8:
+        resultPGM.equaliza();
+        break;
+      case 9:
+        System.out.println("\n Digite o valor da constante: ");
+        constante = scanner.nextFloat();
+        resultPGM = resultPGM.laplace(constante);
+        break;
+      case 10:
+        System.out.println("\n Digite o valor da constante: ");
+        constante = scanner.nextFloat();
+        resultPGM = resultPGM.outroFiltro(constante);
+        break;
+      case 11:
+        int n;
+        System.out.println("\n Digite o valor da dimensão do filtro: ");
+        n = scanner.nextInt();
+        resultPGM = resultPGM.filtroMedia(n, scanner);
+        break;
+    }
+  }
+  
+  public static void switchPPM(String path) throws IOException {
+    switch (operacaoPPM()) {
+      case 1:
+        PGM[] rgb;
+        rgb = ppm.toPGM();
+        escritorPGM("r.pgm", rgb[0]);
+        escritorPGM("g.pgm", rgb[1]);
+        escritorPGM("b.pgm", rgb[2]);
+        System.out.println("\n Resultado foi salvo nos arquivos 'r.ppm', 'g.ppm' e 'b.ppm'");
+        break;
+      
+      case 2:
+        PGM r = ManipuladorArquivo.leitorPGM("r.pgm");
+        PGM g = ManipuladorArquivo.leitorPGM("g.pgm");
+        PGM b = ManipuladorArquivo.leitorPGM("b.pgm");
+        if (!verificaRGB(r, g, b)) {
+          System.err.println("\n Arquivos com dimensões diferentes ou maxval diferente");
+          break;
+        }
+        ppm.toPPM(r, g, b);
+        escritorPPM(path, ppm);
+        System.out.println("\n Resultado foi salvo no arquivo '" + path + "'");
+        break;
+      
+      case 3:
+        PGM[] cmy;
+        cmy = ppm.toCMY();
+        escritorPGM("c.pgm", cmy[0]);
+        escritorPGM("m.pgm", cmy[1]);
+        escritorPGM("y.pgm", cmy[2]);
+        System.out.println("\n Resultados foram salvos nos arquivos c.pgm, m.pgm e y.pgm");
+        break;
+      
+      case 4:
+        PGM[] hsi;
+        hsi = ppm.toHSI();
+        escritorPGM("h.pgm", hsi[0]);
+        escritorPGM("s.pgm", hsi[1]);
+        escritorPGM("i.pgm", hsi[2]);
+        System.out.println("\n Resultados foram salvos nos arquivos h.pgm, s.pgm e i.pgm");
+        break;
+    }
+  }
 }
