@@ -14,8 +14,8 @@ public class ManipuladorArquivo {
     BufferedReader buffRead = new BufferedReader(new FileReader(path));
     PGM imagem;
     String[] valores;
-    ArrayList<String> linhas = new ArrayList<String>();
-    String linha = "";
+    ArrayList<String> linhas = new ArrayList<>();
+    String linha;
     while (true) {
       linha = buffRead.readLine();
       if (linha != null) {
@@ -51,10 +51,10 @@ public class ManipuladorArquivo {
   }
   
   public static void escritorPGM(String path, PGM imagem) throws IOException {
-    ArrayList<String> lista = new ArrayList<String>();
+    ArrayList<String> lista = new ArrayList<>();
     
     lista.add(imagem.tipo);
-    lista.add(Integer.toString(imagem.largura) + " " + Integer.toString(imagem.altura));
+    lista.add(imagem.largura + " " + imagem.altura);
     lista.add(Integer.toString(imagem.maxval));
     
     for (int i = 0; i < imagem.altura; i++)
@@ -62,10 +62,10 @@ public class ManipuladorArquivo {
         lista.add(Integer.toString(imagem.matriz[i][j]));
     
     BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
-    String linha = "";
-    for (int i = 0; i < lista.size(); i++) {
-      linha = lista.get(i);
-      buffWrite.append(linha + "\n");
+    String linha;
+    for (String s : lista) {
+      linha = s;
+      buffWrite.append(linha).append("\n");
     }
     buffWrite.close();
   }
@@ -73,8 +73,8 @@ public class ManipuladorArquivo {
   public static PPM leitorPPM(String path) throws IOException {
     BufferedReader buffRead = new BufferedReader(new FileReader(path));
     ArrayList<String> lista;
-    lista = new ArrayList<String>();
-    String linha = "";
+    lista = new ArrayList<>();
+    String linha;
     String[] coisas;
     while (true) {
       linha = buffRead.readLine();
@@ -121,10 +121,10 @@ public class ManipuladorArquivo {
   }
   
   public static void escritorPPM(String path, PPM imagem) throws IOException {
-    ArrayList<String> lista = new ArrayList<String>();
+    ArrayList<String> lista = new ArrayList<>();
     
     lista.add(imagem.tipo);
-    lista.add(Integer.toString(imagem.largura) + " " + Integer.toString(imagem.altura));
+    lista.add(imagem.largura + " " + imagem.altura);
     lista.add(Integer.toString(imagem.maxval));
     
     for (int i = 0; i < imagem.altura; i++) {
@@ -136,10 +136,10 @@ public class ManipuladorArquivo {
     }
     
     BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
-    String linha = "";
-    for (int i = 0; i < lista.size(); i++) {
-      linha = lista.get(i);
-      buffWrite.append(linha + "\n");
+    String linha;
+    for (String s : lista) {
+      linha = s;
+      buffWrite.append(linha).append("\n");
     }
     buffWrite.close();
   }
