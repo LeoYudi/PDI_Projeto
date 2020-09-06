@@ -117,7 +117,7 @@ public class PGM extends Imagem {
     int[][] nova = new int[this.altura][this.largura];
     for (int i = 0; i < this.altura; i++) {
       for (int j = 0; j < this.largura; j++) {
-        nova[i][j] = aplicaFiltroPixel(i, j, filtro, constante);
+        nova[i][j] = verificaValor(aplicaFiltroPixel(i, j, filtro, constante) + this.matriz[i][j]);
       }
     }
     return new PGM(this.tipo, this.largura, this.altura, this.maxval, nova);
@@ -128,7 +128,7 @@ public class PGM extends Imagem {
     int[][] nova = new int[this.altura][this.largura];
     for (int i = 0; i < this.altura; i++) {
       for (int j = 0; j < this.largura; j++) {
-        nova[i][j] = aplicaFiltroPixel(i, j, filtro, constante);
+        nova[i][j] = verificaValor(aplicaFiltroPixel(i, j, filtro, constante));
       }
     }
     return new PGM(this.tipo, this.largura, this.altura, this.maxval, nova);
@@ -139,7 +139,7 @@ public class PGM extends Imagem {
     int[][] nova = new int[this.altura][this.largura];
     for (int i = 0; i < this.altura; i++) {
       for (int j = 0; j < this.largura; j++) {
-        nova[i][j] = aplicaFiltroPixel(i, j, filtro, 1 / (float) (n * n));
+        nova[i][j] = verificaValor(aplicaFiltroPixel(i, j, filtro, 1 / (float) (n * n)));
       }
     }
     System.out.println("\nGostaria realizar um fatiamento (0 - Não || 1 - Sim)?");
@@ -203,21 +203,22 @@ public class PGM extends Imagem {
   private int aplicaFiltroPixel(int altura, int largura, int[][] filtro, float constante) {
     float result = 0;
     int filtroI = 0, filtroJ;
-    for (int i = altura - 1; i <= altura + 1; i++) {
+    int aux = filtro.length / 2;
+    for (int i = altura - aux; i <= altura + aux; i++) {
       filtroJ = 0;
-      for (int j = largura - 1; j <= largura + 1; j++) {
+      for (int j = largura - aux; j <= largura + aux; j++) {
         if (i >= 0 && i < this.altura && j >= 0 && j < this.largura)
           result += filtro[filtroI][filtroJ++] * this.matriz[i][j];
       }
       filtroI++;
     }
     result *= constante;
-    result += this.matriz[altura][largura];
-    if (result > this.maxval)
+    return (int) result;
+  }
+  
+  public int verificaValor(int valor) {
+    if (valor > this.maxval)
       return this.maxval;
-    else if (result <= 0)
-      return 0;
-    else
-      return (int) result;
+    else return Math.max(valor, 0);
   }
 }
