@@ -12,6 +12,7 @@ public class Main {
   static PGM pgm;
   static PGM resultPGM;
   static PPM ppm;
+  static PGM[] rgb;
   
   public static void main(String[] args) throws IOException {
     System.out.println("Digite o nome do arquivo: ");
@@ -19,17 +20,46 @@ public class Main {
     if (path.contains(".pgm")) {
       pgm = ManipuladorArquivo.leitorPGM(path);
       resultPGM = new PGM(pgm.tipo, pgm.largura, pgm.altura, pgm.maxval, pgm.matriz);
+      System.out.println("\nNão será possível realizar operações de arquivos PPM");
     } else if (path.contains(".ppm")) {
       ppm = ManipuladorArquivo.leitorPPM(path);
+      System.out.println("\nPara realizar operações de arquivos PGM faça a conversão primeiro (número 1)");
     } else {
       System.err.println("\nArquivo precisa ser de extensão .ppm ou .pgm");
       return;
     }
     do {
       if (PGMouPPM()) {
-        switchPGM();
-        System.out.println("\nResultado foi salvo no arquivo 'result.pgm'");
-        escritorPGM("result.pgm", resultPGM);
+        if (pgm == null && rgb == null) {
+          System.err.println("\nPrimeiro converta para PGM nas operações de PPM");
+        } else if (pgm != null) {
+          switchPGM();
+          System.out.println("\nResultado foi salvo no arquivo 'result.pgm'");
+          escritorPGM("result.pgm", resultPGM);
+        } else {
+          for (int i = 0; i < rgb.length; i++) {
+            switch (i) {
+              case 0:
+                System.out.println("\nOperação para cor vermelha:");
+                switchPGM();
+                System.out.println("\nResultado foi salvo no arquivo 'r.pgm'");
+                escritorPGM("r.pgm", resultPGM);
+                break;
+              case 1:
+                System.out.println("\nOperação para cor verde:");
+                switchPGM();
+                System.out.println("\nResultado foi salvo no arquivo 'g.pgm'");
+                escritorPGM("g.pgm", resultPGM);
+                break;
+              case 2:
+                System.out.println("\nOperação para cor azul:");
+                switchPGM();
+                System.out.println("\nResultado foi salvo no arquivo 'b.pgm'");
+                escritorPGM("b.pgm", resultPGM);
+                break;
+            }
+          }
+        }
       } else {
         switchPPM(path);
       }
@@ -150,7 +180,6 @@ public class Main {
   public static void switchPPM(String path) throws IOException {
     switch (operacaoPPM()) {
       case 1:
-        PGM[] rgb;
         rgb = ppm.toPGM();
         escritorPGM("r.pgm", rgb[0]);
         escritorPGM("g.pgm", rgb[1]);

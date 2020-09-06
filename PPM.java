@@ -43,7 +43,7 @@ public class PPM extends Imagem {
   }
   
   public PGM[] toCMY() {
-    PGM[] imagens = new PGM[3];
+    PGM[] imagens;
     imagens = this.toPGM();
     for (int i = 0; i < this.altura; i++) {
       for (int j = 0; j < this.largura; j++) {
@@ -56,7 +56,7 @@ public class PPM extends Imagem {
   }
   
   public PGM[] toHSI() {
-    PGM[] imagens = new PGM[3];
+    PGM[] imagens;
     imagens = this.toPGM();
     double[][] r, g, b;
     r = new double[this.altura][this.largura];
@@ -95,13 +95,7 @@ public class PPM extends Imagem {
   
   public double min(double r, double g, double b) {
     if (r < g) {
-      if (r < b)
-        return r;
-      else
-        return b;
-    } else if (g < b)
-      return g;
-    else
-      return b;
+      return Math.min(r, b);
+    } else return Math.min(g, b);
   }
 }
