@@ -64,14 +64,14 @@ public class PGM extends Imagem {
     }
   }
   
-  public void fatiamento(int inicio, int fim, int valor, boolean total) {
+  public void fatiamento(int inicio, int fim, int valor, boolean total, int valor2) {
     for (int i = 0; i < this.altura; i++) {
       for (int j = 0; j < this.largura; j++) {
         if (this.matriz[i][j] > inicio && this.matriz[i][j] < fim) {
           this.matriz[i][j] = valor;
         } else {
           if (total)
-            this.matriz[i][j] = 0;
+            this.matriz[i][j] = valor2;
         }
       }
     }
@@ -144,7 +144,7 @@ public class PGM extends Imagem {
     }
     System.out.println("\nGostaria realizar um fatiamento (0 - Não || 1 - Sim)?");
     if (scanner.nextInt() == 1) {
-      int inicio, fim, valor, total;
+      int inicio, fim, valor, total, valor2 = 0;
       System.out.println("\nDigite o inicio do intervalo:");
       inicio = scanner.nextInt();
       System.out.println("\nDigite o fim do intervalo:");
@@ -153,7 +153,11 @@ public class PGM extends Imagem {
       valor = scanner.nextInt();
       System.out.println("\nDigite se os pixels fora do intervalo vão ser mantidos ou alterados para preto (0 para manter e 1 para alterar):");
       total = scanner.nextInt();
-      this.fatiamento(inicio, fim, valor, total != 0);
+      if (total == 0) {
+        System.out.println("\nDigite o valor a se recebido pelo pixel caso fora do intervalo:");
+        valor2 = scanner.nextInt();
+      }
+      this.fatiamento(inicio, fim, valor, total != 0, valor2);
     }
     return new PGM(this.tipo, this.largura, this.altura, this.maxval, nova);
   }
