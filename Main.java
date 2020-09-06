@@ -136,16 +136,20 @@ public class Main {
         resultPGM.flipHorizontal();
         break;
       case 6:
-        int inicio, fim, valor, total;
+        int inicio, fim, valor, total, valor2 = 0;
         System.out.println("\nDigite o inicio do intervalo:");
         inicio = scanner.nextInt();
         System.out.println("\nDigite o fim do intervalo:");
         fim = scanner.nextInt();
         System.out.println("\nDigite o valor a ser recebido pelo pixel caso dentro do intervalo:");
         valor = scanner.nextInt();
-        System.out.println("\nDigite se os pixels fora do intervalo vão ser mantidos ou alterados para preto (0 para manter e 1 para alterar):");
+        System.out.println("\nDigite se os pixels fora do intervalo vão ser mantidos ou alterados (0 para manter e 1 para alterar):");
         total = scanner.nextInt();
-        resultPGM.fatiamento(inicio, fim, valor, total != 0);
+        if (total == 0) {
+          System.out.println("\nDigite o valor a se recebido pelo pixel caso fora do intervalo:");
+          valor2 = scanner.nextInt();
+        }
+        resultPGM.fatiamento(inicio, fim, valor, total != 0, valor2);
         break;
       case 7:
         float gama, constante;
@@ -180,6 +184,10 @@ public class Main {
   public static void switchPPM(String path) throws IOException {
     switch (operacaoPPM()) {
       case 1:
+        if (ppm == null) {
+          System.out.println("\nNão é possível realizar esta operação");
+          break;
+        }
         rgb = ppm.toPGM();
         escritorPGM("r.pgm", rgb[0]);
         escritorPGM("g.pgm", rgb[1]);
@@ -201,6 +209,10 @@ public class Main {
         break;
       
       case 3:
+        if (ppm == null) {
+          System.out.println("\nNão é possível realizar esta operação");
+          break;
+        }
         PGM[] cmy;
         cmy = ppm.toCMY();
         escritorPGM("c.pgm", cmy[0]);
@@ -210,6 +222,10 @@ public class Main {
         break;
       
       case 4:
+        if (ppm == null) {
+          System.out.println("\nNão é possível realizar esta operação");
+          break;
+        }
         PGM[] hsi;
         hsi = ppm.toHSI();
         escritorPGM("h.pgm", hsi[0]);
