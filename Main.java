@@ -79,8 +79,9 @@ public class Main {
     System.out.println("9 - Filtro Laplaciano");
     System.out.println("10 - Outro filtro");
     System.out.println("11 - Filtro Média");
-    System.out.println("12 - Filtro Mediana\n");
-    System.out.println("Qual operação gostaria de realizar com a imagem (1-12)? ");
+    System.out.println("12 - Filtro Mediana");
+    System.out.println("13 - Filtro High Boost\n");
+    System.out.println("Qual operação gostaria de realizar com a imagem (1-13)? ");
     
     Scanner scanner = new Scanner(System.in);
     
