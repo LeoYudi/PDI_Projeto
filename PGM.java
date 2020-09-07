@@ -1,7 +1,6 @@
 package com.company;
 
 import java.util.Arrays;
-import java.util.Scanner;
 
 public class PGM extends Imagem {
   int[][] matriz;
@@ -244,7 +243,6 @@ public class PGM extends Imagem {
           result[i][j] = max;
       }
     }
-    
     return result;
   }
   

@@ -38,6 +38,8 @@ public class Main {
           escritorPGM("result.pgm", resultPGM);
         } else {
           for (int i = 0; i < rgb.length; i++) {
+            pgm = new PGM(rgb[i].tipo, rgb[i].largura, rgb[i].altura, rgb[i].maxval, rgb[i].matriz);
+            resultPGM = new PGM(rgb[i].tipo, rgb[i].largura, rgb[i].altura, rgb[i].maxval, rgb[i].matriz);
             switch (i) {
               case 0:
                 System.out.println("\nOperação para cor vermelha:");
@@ -147,7 +149,7 @@ public class Main {
         valor = scanner.nextInt();
         System.out.println("\nDigite se os pixels fora do intervalo vão ser mantidos ou alterados (0 para manter e 1 para alterar):");
         total = scanner.nextInt();
-        if (total == 0) {
+        if (total == 1) {
           System.out.println("\nDigite o valor a se recebido pelo pixel caso fora do intervalo:");
           valor2 = scanner.nextInt();
         }
@@ -219,8 +221,8 @@ public class Main {
           break;
         }
         ppm.toPPM(r, g, b);
-        escritorPPM(path, ppm);
-        System.out.println("\n Resultado foi salvo no arquivo '" + path + "'");
+        escritorPPM("result.ppm", ppm);
+        System.out.println("\n Resultado foi salvo no arquivo result.ppm");
         break;
       
       case 3:
