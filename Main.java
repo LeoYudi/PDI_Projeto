@@ -177,12 +177,20 @@ public class Main {
         int n;
         System.out.println("\n Digite o valor da dimensão do filtro: ");
         n = scanner.nextInt();
-        resultPGM = resultPGM.filtroMedia(n, scanner);
+        resultPGM = resultPGM.filtroMedia(n);
         break;
       case 12:
         System.out.println("\nDigite o valor da dimensão do filtro: ");
         valor = scanner.nextInt();
         resultPGM = resultPGM.filtroMediana(valor);
+        break;
+      case 13:
+        System.out.println("\nDigite o valor da constante:");
+        valor = scanner.nextInt();
+        resultPGM = resultPGM.filtroMedia(3);
+        resultPGM.matriz = pgm.sub(pgm.matriz, resultPGM.matriz);
+        resultPGM.matriz = pgm.mult(resultPGM.matriz, valor, resultPGM.maxval);
+        resultPGM.matriz = pgm.soma(resultPGM.matriz, pgm.matriz, resultPGM.maxval);
         break;
     }
   }
