@@ -91,8 +91,8 @@ public class Main {
   }
   
   public static int operacaoPPM() {
-    System.out.println("1 - PPM para PGM");
-    System.out.println("2 - PGM para PPM (certifique-se que os arquivos r.pgm, g.pgm e b.pgm já estão salvos na pasta raiz do projeto e setados com os valores desejados)");
+    System.out.println("1 - PPM para RGB");
+    System.out.println("2 - RGB para PPM (certifique-se que os arquivos r.pgm, g.pgm e b.pgm já estão salvos na pasta raiz do projeto e setados com os valores desejados)");
     System.out.println("3 - RGB para CMY");
     System.out.println("4 - RGB para HSI\n");
     System.out.println("Qual operação gostaria de realizar (1-4)?");
@@ -188,9 +188,11 @@ public class Main {
         resultPGM = resultPGM.filtroMediana(valor);
         break;
       case 13:
+        System.out.println("\nDigite o valor da dimensão do filtro:");
+        valor = scanner.nextInt();
+        resultPGM = resultPGM.filtroMedia(valor);
         System.out.println("\nDigite o valor da constante:");
         valor = scanner.nextInt();
-        resultPGM = resultPGM.filtroMedia(3);
         resultPGM.matriz = pgm.sub(pgm.matriz, resultPGM.matriz);
         resultPGM.matriz = pgm.mult(resultPGM.matriz, valor, resultPGM.maxval);
         resultPGM.matriz = pgm.soma(resultPGM.matriz, pgm.matriz, resultPGM.maxval);
