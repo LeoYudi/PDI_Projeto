@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class PGM extends Imagem {
@@ -128,7 +129,7 @@ public class PGM extends Imagem {
     int[][] nova = new int[this.altura][this.largura];
     for (int i = 0; i < this.altura; i++) {
       for (int j = 0; j < this.largura; j++) {
-        nova[i][j] = verificaValor(aplicaFiltroPixel(i, j, filtro, constante));
+        nova[i][j] = verificaValor(aplicaFiltroPixel(i, j, filtro, constante) + this.matriz[i][j]);
       }
     }
     return new PGM(this.tipo, this.largura, this.altura, this.maxval, nova);
@@ -158,6 +159,16 @@ public class PGM extends Imagem {
         valor2 = scanner.nextInt();
       }
       this.fatiamento(inicio, fim, valor, total != 0, valor2);
+    }
+    return new PGM(this.tipo, this.largura, this.altura, this.maxval, nova);
+  }
+  
+  public PGM filtroMediana(int valor) {
+    int[][] nova = new int[this.altura][this.largura];
+    for (int i = 0; i < this.altura; i++) {
+      for (int j = 0; j < this.largura; j++) {
+        nova[i][j] = aplicaMediana(valor, i, j);
+      }
     }
     return new PGM(this.tipo, this.largura, this.altura, this.maxval, nova);
   }
@@ -218,6 +229,21 @@ public class PGM extends Imagem {
     }
     result *= constante;
     return (int) result;
+  }
+  
+  private int aplicaMediana(int valor, int altura, int largura) {
+    int[] vetor = new int[valor * valor];
+    int aux = valor / 2, cont = 0;
+    for (int i = altura - aux; i < altura + aux; i++) {
+      for (int j = largura - aux; j < largura + aux; j++) {
+        if (i >= 0 && i < this.altura && j >= 0 && j < this.largura)
+          vetor[cont++] = this.matriz[i][j];
+        else
+          vetor[cont++] = 0;
+      }
+    }
+    Arrays.sort(vetor);
+    return vetor[(valor * valor / 2) + 1];
   }
   
   public int verificaValor(int valor) {

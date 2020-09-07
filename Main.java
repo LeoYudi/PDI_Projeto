@@ -78,8 +78,9 @@ public class Main {
     System.out.println("8 - Equalizar");
     System.out.println("9 - Filtro Laplaciano");
     System.out.println("10 - Outro filtro");
-    System.out.println("11 - Filtro Média\n");
-    System.out.println("Qual operação gostaria de realizar com a imagem (1-11)? ");
+    System.out.println("11 - Filtro Média");
+    System.out.println("12 - Filtro Mediana\n");
+    System.out.println("Qual operação gostaria de realizar com a imagem (1-12)? ");
     
     Scanner scanner = new Scanner(System.in);
     
@@ -98,7 +99,7 @@ public class Main {
   }
   
   public static boolean continua() {
-    System.out.println("\nGostaria de fazer outra operação (1-Sim || 0-Não)?");
+    System.out.println("\nGostaria de fazer outra operação (0-Não || 1-Sim)?");
     return scanner.nextInt() == 1;
   }
   
@@ -177,6 +178,11 @@ public class Main {
         System.out.println("\n Digite o valor da dimensão do filtro: ");
         n = scanner.nextInt();
         resultPGM = resultPGM.filtroMedia(n, scanner);
+        break;
+      case 12:
+        System.out.println("\nDigite o valor da dimensão do filtro: ");
+        valor = scanner.nextInt();
+        resultPGM = resultPGM.filtroMediana(valor);
         break;
     }
   }
