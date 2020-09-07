@@ -135,30 +135,13 @@ public class PGM extends Imagem {
     return new PGM(this.tipo, this.largura, this.altura, this.maxval, nova);
   }
   
-  public PGM filtroMedia(int n, Scanner scanner) {
-    int[][] filtro = filtroMedia(n);
+  public PGM filtroMedia(int n) {
+    int[][] filtro = criaFiltroMedia(n);
     int[][] nova = new int[this.altura][this.largura];
     for (int i = 0; i < this.altura; i++) {
       for (int j = 0; j < this.largura; j++) {
         nova[i][j] = verificaValor(aplicaFiltroPixel(i, j, filtro, 1 / (float) (n * n)));
       }
-    }
-    System.out.println("\nGostaria realizar um fatiamento (0 - Não || 1 - Sim)?");
-    if (scanner.nextInt() == 1) {
-      int inicio, fim, valor, total, valor2 = 0;
-      System.out.println("\nDigite o inicio do intervalo:");
-      inicio = scanner.nextInt();
-      System.out.println("\nDigite o fim do intervalo:");
-      fim = scanner.nextInt();
-      System.out.println("\nDigite o valor a ser recebido pelo pixel caso dentro do intervalo:");
-      valor = scanner.nextInt();
-      System.out.println("\nDigite se os pixels fora do intervalo vão ser mantidos ou alterados para preto (0 para manter e 1 para alterar):");
-      total = scanner.nextInt();
-      if (total == 0) {
-        System.out.println("\nDigite o valor a se recebido pelo pixel caso fora do intervalo:");
-        valor2 = scanner.nextInt();
-      }
-      this.fatiamento(inicio, fim, valor, total != 0, valor2);
     }
     return new PGM(this.tipo, this.largura, this.altura, this.maxval, nova);
   }
@@ -205,7 +188,7 @@ public class PGM extends Imagem {
     return filtro;
   }
   
-  private int[][] filtroMedia(int n) {
+  private int[][] criaFiltroMedia(int n) {
     int[][] filtro = new int[n][n];
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < n; j++) {
@@ -250,5 +233,42 @@ public class PGM extends Imagem {
     if (valor > this.maxval)
       return this.maxval;
     else return Math.max(valor, 0);
+  }
+  
+  public int[][] soma(int[][] a, int[][] b, int max) {
+    int[][] result = new int[a.length][a[0].length];
+    for (int i = 0; i < a.length; i++) {
+      for (int j = 0; j < a[0].length; j++) {
+        result[i][j] = a[i][j] + b[i][j];
+        if (result[i][j] > max)
+          result[i][j] = max;
+      }
+    }
+    
+    return result;
+  }
+  
+  public int[][] sub(int[][] a, int[][] b) {
+    int[][] result = new int[a.length][a[0].length];
+    for (int i = 0; i < a.length; i++) {
+      for (int j = 0; j < a[0].length; j++) {
+        result[i][j] = a[i][j] - b[i][j];
+        if (result[i][j] < 0)
+          result[i][j] = 0;
+      }
+    }
+    return result;
+  }
+  
+  public int[][] mult(int[][] a, int valor, int max) {
+    int[][] result = new int[a.length][a[0].length];
+    for (int i = 0; i < a.length; i++) {
+      for (int j = 0; j < a[0].length; j++) {
+        result[i][j] = a[i][j] * valor;
+        if (result[i][j] > max)
+          result[i][j] = max;
+      }
+    }
+    return result;
   }
 }
