@@ -26,6 +26,7 @@ public class Main {
     }
   }
   
+  //conjunto de println de operações com PGM
   public static int operacaoPGM() {
     System.out.println("\n\n");
     System.out.println("1 - Escurecer");
@@ -48,6 +49,7 @@ public class Main {
     return scanner.nextInt();
   }
   
+  //conjunto de println de operações com PPM
   public static int operacaoPPM() {
     System.out.println("1 - PPM para RGB");
     System.out.println("2 - RGB para PPM (certifique-se que os arquivos r.pgm, g.pgm e b.pgm já estão salvos na pasta raiz do projeto e setados com os valores desejados)");
@@ -59,16 +61,19 @@ public class Main {
     return scanner.nextInt();
   }
   
+  //função para continuar o loop de operações
   public static boolean continua() {
     System.out.println("\nGostaria de fazer outra operação (0-Não || 1-Sim)?");
     return scanner.nextInt() == 1;
   }
   
+  //função para perguntar qual tipo de operação será realizada
   public static boolean PGMouPPM() {
     System.out.println("\nOperação para arquivos 1-PGM ou 2-PPM?");
     return scanner.nextInt() == 1;
   }
   
+  //função para tratamento de erro nas imagens r g b
   public static boolean verificaRGB(PGM r, PGM g, PGM b) {
     if (r.altura == g.altura && r.altura == b.altura) {
       if (r.largura == g.largura && r.largura == b.largura) {
@@ -78,6 +83,7 @@ public class Main {
     return false;
   }
   
+  //função com switch das funcionalidades de PGM
   public static void switchPGM() {
     switch (operacaoPGM()) {
       case 1:
@@ -158,6 +164,7 @@ public class Main {
     }
   }
   
+  //função com as funcionalidades de PPM
   public static void switchPPM() throws IOException {
     switch (operacaoPPM()) {
       case 1:
@@ -213,6 +220,7 @@ public class Main {
     }
   }
   
+  //função que inicia a sequencia iterativa
   public static void iterativo() throws IOException {
     System.out.println("Digite o nome do arquivo: ");
     String path = scanner.next();
@@ -267,7 +275,7 @@ public class Main {
     } while (continua());
   }
   
-  
+  //funçao que inicia a sequencia com arquivo
   public static void opArquivo() throws IOException {
     System.out.println("\nDigite o nome do arquivo");
     String path = scanner.next();

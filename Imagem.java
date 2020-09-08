@@ -1,5 +1,6 @@
 package com.company;
 
+//classe que teoricamente era para ser utilizada para caso existisse um método que engloba PGM e PPM
 public class Imagem {
   protected String tipo;
   protected int largura, altura, maxval;

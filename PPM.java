@@ -8,6 +8,7 @@ public class PPM extends Imagem {
     this.valores = valores;
   }
   
+  //converte uma imagem PPM em um vetor de PGMs, uma posição para cada canal
   public PGM[] toPGM() {
     PGM[] imagens = new PGM[3];
     int[][] r, g, b;
@@ -27,6 +28,7 @@ public class PPM extends Imagem {
     return imagens;
   }
   
+  //converte 3 imagens PGM para uma imagem PPM
   public void toPPM(PGM r, PGM g, PGM b) {
     this.tipo = "P3";
     this.maxval = r.maxval;
@@ -42,6 +44,7 @@ public class PPM extends Imagem {
     }
   }
   
+  //converte uma imagem PPM em um vetor de imagens PGM(CMY)
   public PGM[] toCMY() {
     PGM[] imagens;
     imagens = this.toPGM();
@@ -55,6 +58,7 @@ public class PPM extends Imagem {
     return imagens;
   }
   
+  //converte uma imagem PPM em um vetor de imagens PGM(HSI)
   public PGM[] toHSI() {
     PGM[] imagens;
     imagens = this.toPGM();
@@ -93,6 +97,7 @@ public class PPM extends Imagem {
     return imagens;
   }
   
+  //função utilizada para encontrar o valor minimo dentre 3 valores
   public double min(double r, double g, double b) {
     if (r < g) {
       return Math.min(r, b);

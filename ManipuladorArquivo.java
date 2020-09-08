@@ -10,12 +10,14 @@ import java.util.Arrays;
 
 public class ManipuladorArquivo {
   
+  //função para ler arquivo PGM
   public static PGM leitorPGM(String path) throws IOException {
     BufferedReader buffRead = new BufferedReader(new FileReader(path));
     PGM imagem;
     String[] valores;
     ArrayList<String> linhas = new ArrayList<>();
     String linha;
+    //loop para armazenar arquivo em arraylist de string
     while (true) {
       linha = buffRead.readLine();
       if (linha != null) {
@@ -37,6 +39,7 @@ public class ManipuladorArquivo {
     int[][] result = new int[numLinhas][numColunas];
     int Linha = 0, coluna = 0;
     
+    //loop para conversão do arrayList de string para PGM
     for (int i = 4; i < linhas.size(); i++) {
       if (coluna != numColunas)
         result[Linha][coluna++] = Integer.parseInt(linhas.get(i));
@@ -50,6 +53,7 @@ public class ManipuladorArquivo {
     return imagem;
   }
   
+  //função para escrever arquivo PGM
   public static void escritorPGM(String path, PGM imagem) throws IOException {
     ArrayList<String> lista = new ArrayList<>();
     
@@ -63,6 +67,7 @@ public class ManipuladorArquivo {
     
     BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
     String linha;
+    //loop para escrita dos valores no arquivo, sendo que cada valor ficará em uma linha
     for (String s : lista) {
       linha = s;
       buffWrite.append(linha).append("\n");
@@ -70,12 +75,15 @@ public class ManipuladorArquivo {
     buffWrite.close();
   }
   
+  //função para leitura de um arquivo PPM
   public static PPM leitorPPM(String path) throws IOException {
     BufferedReader buffRead = new BufferedReader(new FileReader(path));
     ArrayList<String> lista;
     lista = new ArrayList<>();
     String linha;
     String[] coisas;
+    
+    //loop para armazenar arquivo em array list de string
     while (true) {
       linha = buffRead.readLine();
       if (linha != null) {
@@ -97,18 +105,8 @@ public class ManipuladorArquivo {
       maxval = Integer.parseInt(lista.get(3));
       valores = new int[altura][largura][3];
       int linhas = 4;
-//      for (int i = 4; i < lista.size(); i++) {
-//        if (coluna != largura) {
-//          valores[linhas][coluna][0] = Integer.parseInt(lista.get(i++));
-//          valores[linhas][coluna][1] = Integer.parseInt(lista.get(i++));
-//          valores[linhas][coluna++][2] = Integer.parseInt(lista.get(i++));
-//        } else {
-//          coluna = 0;
-//          valores[++linhas][coluna][0] = Integer.parseInt(lista.get(i++));
-//          valores[linhas][coluna][1] = Integer.parseInt(lista.get(i++));
-//          valores[linhas][coluna++][2] = Integer.parseInt(lista.get(i++));
-//        }
-//      }
+      
+      //loop para escrita dos valores no arquivo, sendo que cada valor ficará em uma linha
       for (int i = 0; i < altura; i++) {
         for (int j = 0; j < largura; j++) {
           valores[i][j][0] = Integer.parseInt(lista.get(linhas++));
@@ -120,6 +118,7 @@ public class ManipuladorArquivo {
     return new PPM(tipo, largura, altura, maxval, valores);
   }
   
+  //função para escrita de arquivo PPM
   public static void escritorPPM(String path, PPM imagem) throws IOException {
     ArrayList<String> lista = new ArrayList<>();
     
@@ -144,6 +143,7 @@ public class ManipuladorArquivo {
     buffWrite.close();
   }
   
+  //leitura do arquivo da sequencia de operações
   public static ArrayList<String> leitorOp(String path) throws IOException {
     BufferedReader buffRead = new BufferedReader(new FileReader(path));
     ArrayList<String> linhas = new ArrayList<>();
