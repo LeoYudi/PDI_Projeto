@@ -1,6 +1,7 @@
 package com.company;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import static com.company.ManipuladorArquivo.escritorPGM;
@@ -15,57 +16,14 @@ public class Main {
   static PGM[] rgb;
   
   public static void main(String[] args) throws IOException {
-    System.out.println("Digite o nome do arquivo: ");
-    String path = scanner.next();
-    if (path.contains(".pgm")) {
-      pgm = ManipuladorArquivo.leitorPGM(path);
-      resultPGM = new PGM(pgm.tipo, pgm.largura, pgm.altura, pgm.maxval, pgm.matriz);
-      System.out.println("\nNão será possível realizar operações de arquivos PPM");
-    } else if (path.contains(".ppm")) {
-      ppm = ManipuladorArquivo.leitorPPM(path);
-      System.out.println("\nPara realizar operações de arquivos PGM faça a conversão primeiro (número 1)");
-    } else {
-      System.err.println("\nArquivo precisa ser de extensão .ppm ou .pgm");
-      return;
+    System.out.println("Sequência: (1 - Interativa || 2 - Arquivo)");
+    switch (scanner.nextInt()) {
+      case 1:
+        iterativo();
+        break;
+      case 2:
+        opArquivo();
     }
-    do {
-      if (PGMouPPM()) {
-        if (pgm == null && rgb == null) {
-          System.err.println("\nPrimeiro converta para PGM nas operações de PPM");
-        } else if (pgm != null) {
-          switchPGM();
-          System.out.println("\nResultado foi salvo no arquivo 'result.pgm'");
-          escritorPGM("result.pgm", resultPGM);
-        } else {
-          for (int i = 0; i < rgb.length; i++) {
-            pgm = new PGM(rgb[i].tipo, rgb[i].largura, rgb[i].altura, rgb[i].maxval, rgb[i].matriz);
-            resultPGM = new PGM(rgb[i].tipo, rgb[i].largura, rgb[i].altura, rgb[i].maxval, rgb[i].matriz);
-            switch (i) {
-              case 0:
-                System.out.println("\nOperação para cor vermelha:");
-                switchPGM();
-                System.out.println("\nResultado foi salvo no arquivo 'r.pgm'");
-                escritorPGM("r.pgm", resultPGM);
-                break;
-              case 1:
-                System.out.println("\nOperação para cor verde:");
-                switchPGM();
-                System.out.println("\nResultado foi salvo no arquivo 'g.pgm'");
-                escritorPGM("g.pgm", resultPGM);
-                break;
-              case 2:
-                System.out.println("\nOperação para cor azul:");
-                switchPGM();
-                System.out.println("\nResultado foi salvo no arquivo 'b.pgm'");
-                escritorPGM("b.pgm", resultPGM);
-                break;
-            }
-          }
-        }
-      } else {
-        switchPPM(path);
-      }
-    } while (continua());
   }
   
   public static int operacaoPGM() {
@@ -200,7 +158,7 @@ public class Main {
     }
   }
   
-  public static void switchPPM(String path) throws IOException {
+  public static void switchPPM() throws IOException {
     switch (operacaoPPM()) {
       case 1:
         if (ppm == null) {
@@ -253,5 +211,167 @@ public class Main {
         System.out.println("\n Resultados foram salvos nos arquivos h.pgm, s.pgm e i.pgm");
         break;
     }
+  }
+  
+  public static void iterativo() throws IOException {
+    System.out.println("Digite o nome do arquivo: ");
+    String path = scanner.next();
+    if (path.contains(".pgm")) {
+      pgm = ManipuladorArquivo.leitorPGM(path);
+      resultPGM = new PGM(pgm.tipo, pgm.largura, pgm.altura, pgm.maxval, pgm.matriz);
+      System.out.println("\nNão será possível realizar operações de arquivos PPM");
+    } else if (path.contains(".ppm")) {
+      ppm = ManipuladorArquivo.leitorPPM(path);
+      System.out.println("\nPara realizar operações de arquivos PGM faça a conversão primeiro (número 1)");
+    } else {
+      System.err.println("\nArquivo precisa ser de extensão .ppm ou .pgm");
+      return;
+    }
+    do {
+      if (PGMouPPM()) {
+        if (pgm == null && rgb == null) {
+          System.err.println("\nPrimeiro converta para PGM nas operações de PPM");
+        } else if (pgm != null) {
+          switchPGM();
+          System.out.println("\nResultado foi salvo no arquivo 'result.pgm'");
+          escritorPGM("result.pgm", resultPGM);
+        } else {
+          for (int i = 0; i < rgb.length; i++) {
+            pgm = new PGM(rgb[i].tipo, rgb[i].largura, rgb[i].altura, rgb[i].maxval, rgb[i].matriz);
+            resultPGM = new PGM(rgb[i].tipo, rgb[i].largura, rgb[i].altura, rgb[i].maxval, rgb[i].matriz);
+            switch (i) {
+              case 0:
+                System.out.println("\nOperação para cor vermelha:");
+                switchPGM();
+                System.out.println("\nResultado foi salvo no arquivo 'r.pgm'");
+                escritorPGM("r.pgm", resultPGM);
+                break;
+              case 1:
+                System.out.println("\nOperação para cor verde:");
+                switchPGM();
+                System.out.println("\nResultado foi salvo no arquivo 'g.pgm'");
+                escritorPGM("g.pgm", resultPGM);
+                break;
+              case 2:
+                System.out.println("\nOperação para cor azul:");
+                switchPGM();
+                System.out.println("\nResultado foi salvo no arquivo 'b.pgm'");
+                escritorPGM("b.pgm", resultPGM);
+                break;
+            }
+          }
+        }
+      } else {
+        switchPPM();
+      }
+    } while (continua());
+  }
+  
+  
+  public static void opArquivo() throws IOException {
+    System.out.println("\nDigite o nome do arquivo");
+    String path = scanner.next();
+    ArrayList<String> linhas = ManipuladorArquivo.leitorOp(path);
+    String[] split;
+    for (String linha : linhas) {
+      split = linha.split("\\s");
+      switch (split[0]) {
+        case "leitura":
+          if (split[1].contains(".pgm")) {
+            pgm = ManipuladorArquivo.leitorPGM(split[1]);
+            resultPGM = new PGM(pgm.tipo, pgm.largura, pgm.altura, pgm.maxval, pgm.matriz);
+          } else if (split[1].contains(".ppm")) {
+            ppm = ManipuladorArquivo.leitorPPM(split[1]);
+            rgb = ppm.toPGM();
+          } else {
+            System.err.println("Formato do arquivo inválido!");
+            return;
+          }
+          break;
+        
+        case "escrita":
+          if (split[1].contains(".pgm"))
+            ManipuladorArquivo.escritorPGM(split[1], resultPGM);
+          else if (split[1].contains(".ppm"))
+            ManipuladorArquivo.escritorPPM(split[1], ppm);
+          else {
+            System.err.println("Formato do arquivo inválido!");
+            return;
+          }
+          break;
+        
+        case "soma":
+          if (pgm != null)
+            resultPGM.clarear(Integer.parseInt(split[1]));
+          else {
+            for (PGM imagem : rgb)
+              imagem.clarear(Integer.parseInt(split[1]));
+          }
+          break;
+        
+        case "sub":
+          if (pgm != null)
+            resultPGM.escurecer(Integer.parseInt(split[1]));
+          else {
+            for (PGM imagem : rgb)
+              imagem.escurecer(Integer.parseInt(split[1]));
+          }
+          break;
+        case "mult":
+          if (pgm != null)
+            resultPGM.matriz = resultPGM.mult(resultPGM.matriz, Integer.parseInt(split[1]), resultPGM.maxval);
+          else {
+            for (PGM imagem : rgb)
+              imagem.matriz = imagem.mult(imagem.matriz, Integer.parseInt(split[1]), imagem.maxval);
+          }
+          break;
+        
+        case "fatiamento":
+          if (pgm != null)
+            resultPGM.fatiamento(Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3]), Integer.parseInt(split[4]) != 0, Integer.parseInt(split[5]));
+          else {
+            for (PGM imagem : rgb)
+              imagem.fatiamento(Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3]), Integer.parseInt(split[4]) != 0, Integer.parseInt(split[5]));
+          }
+          break;
+        
+        case "filtro-media":
+          if (pgm != null)
+            resultPGM.filtroMedia(Integer.parseInt(split[1]));
+          else {
+            for (PGM imagem : rgb)
+              imagem.filtroMedia(Integer.parseInt(split[1]));
+          }
+          break;
+        
+        case "filtro-mediana":
+          if (pgm != null)
+            resultPGM.filtroMediana(Integer.parseInt(split[1]));
+          else {
+            for (PGM imagem : rgb)
+              imagem.filtroMediana(Integer.parseInt(split[1]));
+          }
+          break;
+        
+        case "filtro-laplaciano":
+          if (pgm != null)
+            resultPGM.laplace(Float.parseFloat(split[1]));
+          else {
+            for (PGM imagem : rgb)
+              imagem.laplace(Float.parseFloat(split[1]));
+          }
+          break;
+        
+        case "equaliza":
+          if (pgm != null)
+            resultPGM.equaliza();
+          else {
+            for (PGM imagem : rgb)
+              imagem.equaliza();
+          }
+          break;
+      }
+    }
+    System.out.println("\n Todos os processos realizados");
   }
 }

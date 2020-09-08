@@ -143,4 +143,18 @@ public class ManipuladorArquivo {
     }
     buffWrite.close();
   }
+  
+  public static ArrayList<String> leitorOp(String path) throws IOException {
+    BufferedReader buffRead = new BufferedReader(new FileReader(path));
+    ArrayList<String> linhas = new ArrayList<>();
+    String linha = "";
+    while (true) {
+      linha = buffRead.readLine();
+      if (linha != null)
+        linhas.add(linha);
+      else
+        break;
+    }
+    return linhas;
+  }
 }
